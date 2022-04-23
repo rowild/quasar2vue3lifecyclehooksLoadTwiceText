@@ -1,0 +1,17 @@
+/.git
+/.quasar
+/.vscode
+/data
+/dist
+/node_modules
+/public
+/src-capacitor
+/src-cordova
+/src/assets
+/src/css
+.editorconfig
+.env
+.eslintrc.js
+.gitignore
+REAMDE.md
+yarn.lock

@@ -1,0 +1,21 @@
+/*
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+*/
+
+/* app global css */
+body {
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--dark) url("/images/patterns/noisy_net/noisy_net.png") center
+    center repeat;
+}
+
+/*
+#q-app {
+  border: 5px solid blue;
+}
+*/
