@@ -32,11 +32,11 @@ onDeactivated(() => {
 })
 
 onBeforeUpdate(() => {
-  console.log('onBeforeUpdate invoked');
+  console.log('IndexPage onBeforeUpdate invoked');
 })
 
 onUpdated(() => {
-  console.log('onUpdated invoked');
+  console.log('IndexPage onUpdated invoked');
 })
 
 </script>

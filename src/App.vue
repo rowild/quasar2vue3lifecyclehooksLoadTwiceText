@@ -1,29 +1,39 @@
 <template>
+  <h1>App</h1>
+
   <div v-if="isLoading" class="flex flex-center fit">
     <div class="rotationLoader">Loading...</div>
   </div>
 
-  <router-view v-slot="{ Component, route }" v-if="!isLoading">
-    <!--
-      <transition appear mode="out-in" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut"
-    -->
-    <Transition appear mode="out-in" @before-appear="onBeforeAppear" @appear="onAppear" @after-appear="onAfterAppear"
-      @before-enter="onBeforeEnter" @enter="onEnter" @after-enter="onAfterEnter" @before-leave="onBeforeLeave"
-      @leave="onLeave" @after-leave="onAfterLeave" :css="false" duration="350" :key="route">
-      <component :is="Component" />
+  <router-view v-slot="{ Component, route }" v-else>
+    <Transition appear mode="out-in" @before-appear="onBeforeAppear" @appear="onAppear" @enter="onEnter"
+      @leave="onLeave" duration="350" :css="false" :key="route">
+      <KeepAlive>
+        <component :is="Component" />
+      </KeepAlive>
     </Transition>
   </router-view>
+  <!--
+  <router-view v-else />
+  -->
+
 </template>
 
 <script setup>
-import { ref, onMounted, onActivated, onDeactivated } from "vue";
+import { ref, onBeforeMount, onMounted, onActivated, onDeactivated, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted, onErrorCaptured } from "vue";
 
 let isLoading = ref(false);
 
 /* Life cycles hooks */
 
+const consCol = "color: darkolivegreen"
+
+onBeforeMount(() => {
+  console.log("%cApp onBeforeMount invoked", consCol);
+});
+
 onMounted(() => {
-  console.log("App onMounted invoked");
+  console.log("%cApp onMounted invoked", consCol);
 
   isLoading.value = true;
 
@@ -37,72 +47,91 @@ onMounted(() => {
 });
 
 onActivated(() => {
-  console.log("App onActivated invoked");
+  console.log("%cApp onActivated invoked", consCol);
 });
 
 onDeactivated(() => {
-  console.log("App onDeactivated invoked");
+  console.log("%cApp onDeactivated invoked", consCol);
 });
+
+onBeforeUpdate(() => {
+  console.log("%cApp onBeforeUpdate invoked", consCol);
+});
+
+onUpdated(() => {
+  console.log("%cApp onUpdated invoked", consCol);
+});
+
+onBeforeUnmount(() => {
+  console.log("%cApp onBeforeUnmount invoked", consCol);
+});
+
+onUnmounted(() => {
+  console.log("%cApp onUnmounted invoked", consCol);
+});
+
+onErrorCaptured(error => {
+  console.error(error)
+})
 
 /* Transition cycles */
 
+const consColTrans = "color: crimson"
+
 // APPEAR
 
-function onBeforeAppear(el) {
-  // console.log('APP: onBeforeAppear invoked');
+const onBeforeAppear = (el) => {
+  console.log('%cAPP: onBeforeAppear invoked', consColTrans);
   // gsap.set(el, { opacity: 0.25 })
 }
 
-function onAppear(el, done) {
-  // console.log('APP: onAppear invoked');
+const onAppear = (el, done) => {
+  console.log('%cAPP: onAppear invoked', consColTrans);
   // gsap.to(el, { opacity: 1, duration: 2, onComplete: done })
-  done
+  setTimeout(() => {
+    console.log(' %c  ...done onAppear App', consColTrans);
+    done
+  }, 2000)
 }
 
-function onAfterAppear(el) {
-  // console.log('APP: onAfterAppear invoked');
-}
-
-function onAfterCancelled(el) {
-  // console.log('APP: onAfterCancelled invoked');
+const onAfterAppear = (el) => {
+  console.log('%cAPP: onAfterAppear invoked', consColTrans);
 }
 
 // ENTER
 
-function onBeforeEnter(el) {
-  // console.log('APP: onBeforeEnter invoked');
+const onBeforeEnter = (el) => {
+  console.log('%cAPP: onBeforeEnter invoked', consColTrans);
 }
 
-function onEnter(el, done) {
-  // console.log('APP: onEnter invoked');
-  done
+const onEnter = (el, done) => {
+  console.log('%cAPP: onEnter invoked', consColTrans);
+  setTimeout(() => {
+    console.log('%c   ...done onEnter App', consColTrans);
+    done
+  }, 2000)
 }
 
-function onAfterEnter(el) {
-  // console.log('APP: onAfterEnter invoked, el =', el);
-}
-
-function onEnterCancelled(el) {
-  // console.log('APP: onEnterCancelled, el =', el);
+const onAfterEnter = (el) => {
+  console.log('%cAPP: onAfterEnter invoked, el =', el, consColTrans);
 }
 
 // LEAVE
 
-function onBeforeLeave(el) {
-  // console.log('APP: onBeforeLeave invoked, el =', el);
+const onBeforeLeave = (el) => {
+  console.log('%cAPP: onBeforeLeave invoked, el =', el, consColTrans);
 }
 
-function onLeave(el, done) {
-  // console.log('APP: onLeave invoked, el =', el);
-  done
+const onLeave = (el, done) => {
+  console.log('%cAPP: onLeave invoked, el =', el, consColTrans);
+  setTimeout(() => {
+    console.log('   ...done onLeave App');
+    done
+  }, 2000)
 }
 
-function onAfterLeave(el) {
-  // console.log('APP: onAfterLeave invoked, el =', el);
-}
-
-function onLeaveCancelled(el) {
-  // console.log('APP: onLeaveCancelled, el =', el);
+const onAfterLeave = (el) => {
+  console.log('%cAPP: onAfterLeave invoked, el =', el, consColTrans);
 }
 </script>
 

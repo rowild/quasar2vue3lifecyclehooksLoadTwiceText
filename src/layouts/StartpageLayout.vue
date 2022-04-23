@@ -1,15 +1,18 @@
 <template>
-  <q-layout view="lHh lpR lFf" container class="absolute-full overflow-hidden">
+  <q-layout view="lHh lpR lFf" container class="absolute-full overflow-hidden bi-border">
     <q-page-container>
+
       <div class="flex flex-center fit window-height" v-if="isLoading">
         <div class="rotationLoader">Loading</div>
       </div>
 
-      <router-view v-slot="{ Component, route }" v-if="!isLoading">
-        <Transition appear @before-appear="onBeforeAppear" @appear="onAppear" @after-appear="onAfterAppear"
-          @before-enter="onBeforeEnter" @enter="onEnter" @after-enter="onAfterEnter" @before-leave="onBeforeLeave"
-          @leave="onLeave" @after-leave="onAfterLeave" :css="false" duration="250" mode="out-in" :key="route">
-          <component :is="Component" />
+      <router-view v-slot="{ Component, route }" v-else>
+        <Transition appear @before-enter="onBeforeEnter" @enter="onEnter" @after-enter="onAfterEnter"
+          @before-leave="onBeforeLeave" @leave="onLeave" @after-leave="onAfterLeave" :css="false" duration="250"
+          mode="out-in" :key="route">
+          <KeepAlive>
+            <component :is="Component" />
+          </KeepAlive>
         </Transition>
       </router-view>
 
@@ -18,14 +21,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onActivated, onDeactivated } from 'vue'
+import { ref, onBeforeMount, onMounted, onActivated, onDeactivated } from 'vue'
 
 const isLoading = ref(false)
 
 /* Life cycles hooks */
 
+onBeforeMount(() => {
+  console.log('START_PAGE LAYOUT: onBeforeMount');
+})
+
 onMounted(() => {
-  console.log('START_PAGE LAYOUT: mounted invoked\n\n');
+  console.log('START_PAGE LAYOUT: onMounted invoked');
 
   isLoading.value = true
 
@@ -39,70 +46,65 @@ onMounted(() => {
 })
 
 onActivated(() => {
-  console.log('START_PAGE LAYOUT: activated');
+  console.log('START_PAGE LAYOUT: onActivated');
 })
 
 onDeactivated(() => {
-  console.log('START_PAGE LAYOUT: deactivated');
+  console.log('START_PAGE LAYOUT: onDeactivated');
 })
 
 /* Transition cycles */
 
+const consColEnter = 'color: green'
+
 // APPEAR
 
-function onBeforeAppear(el) {
+const onBeforeAppear = (el) => {
   console.log('START_PAGE LAYOUT: onBeforeAppear invoked');
-
 }
 
-function onAppear(el, done) {
+const onAppear = (el, done) => {
   console.log('START_PAGE LAYOUT: onAppear invoked');
-  done
+  setTimeout(() => {
+    console.log('   ...done onAppear StartpageLayout');
+    done
+  }, 2000)
 }
 
-function onAfterAppear(el) {
+const onAfterAppear = (el) => {
   console.log('START_PAGE LAYOUT: onAfterAppear invoked');
-}
-
-function onAfterCancelled(el) {
-  console.log('START_PAGE LAYOUT: onAfterCancelled invoked');
 }
 
 // ENTER
 
-function onBeforeEnter(el) {
-  console.log('START_PAGE LAYOUT: onBeforeEnter invoked, el =', el);
+const onBeforeEnter = (el) => {
+  console.log('%cSTART_PAGE LAYOUT: onBeforeEnter invoked, el =', consColEnter, el);
 }
 
-function onEnter(el, done) {
-  console.log('START_PAGE LAYOUT: onEnter invoked, el =', el);
-  done
+const onEnter = (el, done) => {
+  console.log('%cSTART_PAGE LAYOUT: onEnter invoked, el =', consColEnter, el);
+  setTimeout(() => {
+    console.log('   ...done onEnter StartpageLayout');
+    done
+  }, 2000)
 }
 
-function onAfterEnter(el) {
-  console.log('START_PAGE LAYOUT: onAfterEnter invoked, el =', el);
-}
-
-function onEnterCancelled(el) {
-  console.log('START_PAGE LAYOUT: onEnterCancelled, el =', el);
+const onAfterEnter = (el) => {
+  console.log('%cSTART_PAGE LAYOUT: onAfterEnter invoked, el =', consColEnter, el);
 }
 
 // LEAVE
 
-function onBeforeLeave(el) {
+const onBeforeLeave = (el) => {
   console.log('START_PAGE LAYOUT: onBeforeLeave invoked, el =', el);
 }
 
-function onLeave(el, done) {
+const onLeave = (el, done) => {
   console.log('START_PAGE LAYOUT: onLeave invoked, el =', el);
   done
 }
 
-function onAfterLeave(el) {
+const onAfterLeave = (el) => {
   console.log('START_PAGE LAYOUT: onAfterLeave invoked, el =', el);
-}
-
-function onLeaveCancelled(el) {
-  console.log('START_PAGE LAYOUT: onLeaveCancelled, el =', el);
 }
 </script>
